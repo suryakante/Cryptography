@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CAESAR CIPHER</title>
+</head>
+<body>
+<h2>CAESAR CIPHER</h2>
+<h3>1. Encrypt</h3>
+<h4>Message:</h4>
+<textarea rows="4" cols="50" id="plainText"></textarea>
+<form>
+  Shift Key:
+  <input type="number" id="key" min="1" max="26">
+  <br/><button type="button" onClick="encrypt()">Encrypt</button>
+</form>
+<h3 id="errorMsg"></h3>
+Cypher Text:
+<p id="cypherText"></p>
+
+<script>
+function encrypt(){
+	var inputText = document.getElementById('plainText').value;
+	var key = parseInt(document.getElementById('key').value);
+	var cypherText = "";
+	var errorMsg = ""
+	if(inputText.length < 1){
+		errorMsg = "Enter the message to encrypt";
+		handleError(errorMsg);
+	}else if(!key || (key < 1 || key > 26) ){
+		errorMsg = "Shift Key should be inbetween 1-26 the length of alphabets";
+		handleError(errorMsg);
+	}else{
+		for(var i=0; i<inputText.length; i++){
+			var asciiCode = inputText[i].charCodeAt();
+			var encText = "";
+			//Upper Case letters
+			switch(true){
+				case (asciiCode > 64 && asciiCode < 91) : encText = String.fromCharCode(((asciiCode+key-65)%26)+65); break;
+				case (asciiCode > 96 && asciiCode < 123) : encText = String.fromCharCode(((asciiCode+key-97)%26)+97); break;
+				default: encText = inputText[i];
+			}
+			cypherText += encText;
+		}
+	}
+	
+	document.getElementById('cypherText').innerHTML = cypherText;
+}
+function handleError(msg){
+		document.getElementById('errorMsg').innerHTML = msg;
+	}
+</script>
+</body>
+</html>
